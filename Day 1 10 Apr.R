@@ -39,9 +39,23 @@ lam3
 #function within Tidyverse: Slice
 lam_slice <- laminaria %>% 
   slice (6:13)
-lam_miss <- laminaria %>% 
+lam_miss <- laminaria %>% #so named bc working with some missing values in the dataset, but can name it anything
   summarise(mean_sm= mean (stipe_mass, na.rm= T)) #Mean of the stipe mass T measn true
 lam_miss
 lam_miss
+
+#calc st error, no function for se so calc by  variance divide by number of entries and sq that...
+laminaria %>% 
+group_by(site) %>% # Group the dataframe by site
+  summarise(var_bl = var(blade_length), # Calculate variance
+            n_bl = n()) %>% # Count number of values
+  mutate(se_bl = sqrt(var_bl / n_bl)) # Calculate se
+#visualization, always use ggplot
+#specify dataset
+#specify axes variables
+#instead of using pipe ("and then"), use plus (+).
+ggplot(data = laminaria, aes(x = stipe_mass, y = stipe_length)) +
+  geom_point(shape = 21, colour = "salmon", fill = "white") + #21 means empty circle; just for aesthetics.
+  labs(x = "Stipe mass (kg)", y = "Stipe length (cm)")
 
 
